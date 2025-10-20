@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #20002c, #5b0060);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      color: #fff;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 750px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h1, h2 {
+      text-align: center;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 25px;
+    }
+
+    p {
+      text-align: center;
+      color: #ccc;
+    }
+
+    .btn-primary, .btn-success, .btn-secondary {
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      padding: 10px 30px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #9d50bb, #6e48aa);
+      color: #fff;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #00b09b, #96c93d);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #232526, #414345);
+      color: #fff;
+    }
+
+    .btn-primary:hover, .btn-success:hover, .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    input, select {
+      border-radius: 10px !important;
+      border: none !important;
+      padding: 10px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    label {
+      color: #eee;
+      font-weight: 500;
+    }
+
+    .hidden { display: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === Question Section === */
+    #questionCard {
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .question-title {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 15px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      color: #eee;
+      font-weight: 500;
+    }
+
+    .option-card:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.03);
+    }
+
+    .selected-option {
+      background: linear-gradient(135deg, #ff6a00, #ee0979);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+      transform: scale(1.05);
+    }
+
+    .fade-out { opacity: 0; transform: translateY(20px); transition: opacity 0.4s, transform 0.4s; }
+    .fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.4s, transform 0.4s; }
+
+    .progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      width: 0%;
+      transition: width 0.5s;
+    }
+
+    .alert {
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <!-- USER DETAILS -->
+    <div id="userForm">
+      <h1>Mental Health Assessment</h1>
+      <p>Please enter your details before starting.</p>
+      <form id="detailsForm">
+        <div class="mb-3">
+          <label>Full Name</label>
+          <input type="text" class="form-control" id="name" required />
+        </div>
+        <div class="mb-3">
+          <label>Age</label>
+          <input type="number" class="form-control" id="age" required />
+        </div>
+        <div class="mb-3">
+          <label>Email</label>
+          <input type="email" class="form-control" id="email" required />
+        </div>
+        <div class="mb-3">
+          <label>Country</label>
+          <input type="text" class="form-control" id="country" required />
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Start Assessment</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- QUESTIONNAIRE -->
+    <div id="questionnaire" class="hidden">
+      <h2>Mental Health Questionnaire</h2>
+      <div id="questionsContainer">
+        <div id="questionCard"></div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <button id="prevBtn" class="btn btn-secondary">Previous</button>
+        <div class="progress flex-grow-1 mx-3">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <button id="nextBtn" class="btn btn-success">Next</button>
+      </div>
+
+      <div id="result" class="alert mt-4 hidden"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { text: "How have you been feeling emotionally over the past two weeks?",
+        options: ["Generally positive", "Sometimes low", "Often sad", "Very low or hopeless"] },
+      { text: "Have you felt motivated to start or enjoy your usual daily activities?",
+        options: ["Always motivated", "Occasionally lose interest", "Rarely motivated", "Not at all motivated"] },
+      { text: "How has your energy level been throughout the day?",
+        options: ["Energetic and steady", "Mildly tired", "Fatigued often", "Exhausted most of the time"] },
+      { text: "How have you been sleeping recently?",
+        options: ["Sleeping well", "Mild disturbance", "Frequently disrupted", "Severe trouble sleeping or oversleeping"] },
+      { text: "How often have you been worrying or overthinking?",
+        options: ["Rarely", "Sometimes", "Often", "Almost constantly"] },
+      { text: "How would you describe your appetite or eating habits lately?",
+        options: ["Stable appetite", "Minor changes", "Noticeable changes", "Extreme changes in appetite"] },
+      { text: "Have you found it easy to focus or stay mentally present?",
+        options: ["Very easy", "Sometimes distracted", "Often distracted", "Extremely difficult"] },
+      { text: "Have you felt irritable, restless, or unusually slow?",
+        options: ["No noticeable change", "Slightly noticeable", "Moderately noticeable", "Very noticeable change"] },
+      { text: "Have you had thoughts of giving up, self-harm, or that life isn’t worth living?",
+        options: ["Not at all", "Sometimes", "Often", "Very often"] },
+      { text: "Overall, how difficult have these experiences made your daily functioning?",
+        options: ["Not difficult", "Somewhat difficult", "Very difficult", "Extremely difficult"] }
+    ];
+
+    const userForm = document.getElementById("userForm");
+    const questionnaire = document.getElementById("questionnaire");
+    const detailsForm = document.getElementById("detailsForm");
+    const questionCard = document.getElementById("questionCard");
+    const progressBar = document.getElementById("progressBar");
+    const resultBox = document.getElementById("result");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+
+    let currentQuestion = 0;
+    const answers = {};
+
+    function fadeOutIn(element, callback) {
+      element.classList.add("fade-out");
+      setTimeout(() => {
+        callback();
+        element.classList.remove("fade-out");
+        element.classList.add("fade-in");
+        setTimeout(() => element.classList.remove("fade-in"), 400);
+      }, 400);
+    }
+
+    function showQuestion(index) {
+      const q = questions[index];
+      fadeOutIn(questionCard, () => {
+        let html = `<div class="question-title"><strong>${index + 1}. ${q.text}</strong></div><div class='option-grid'>`;
+        q.options.forEach((opt, i) => {
+          const selected = answers[index] == i ? "selected-option" : "";
+          html += `<div class="option-card ${selected}" onclick="selectOption(${index},${i},this)">${opt}</div>`;
+        });
+        html += "</div>";
+        questionCard.innerHTML = html;
+      });
+      progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+      prevBtn.classList.toggle("hidden", index === 0);
+      nextBtn.textContent = index === questions.length - 1 ? "Predict" : "Next";
+    }
+
+    function selectOption(qIndex, optIndex, el) {
+      answers[qIndex] = optIndex;
+      el.parentNode.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected-option"));
+      el.classList.add("selected-option");
+    }
+
+    detailsForm.addEventListener("submit", e => {
+      e.preventDefault();
+      userForm.classList.add("hidden");
+      questionnaire.classList.remove("hidden");
+      showQuestion(currentQuestion);
+    });
+
+    nextBtn.addEventListener("click", async () => {
+      if (answers[currentQuestion] === undefined) {
+        alert("Please select an option before proceeding.");
+        return;
+      }
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+      } else {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: Object.values(answers).map(Number) }),
+        });
+        const data = await response.json();
+        resultBox.classList.remove("hidden");
+        resultBox.className = "alert alert-info mt-4";
+        resultBox.textContent = "Prediction Result: " + data.result;
+        questionCard.classList.add("hidden");
+        nextBtn.classList.add("hidden");
+        prevBtn.classList.add("hidden");
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion(currentQuestion);
+      }
+    });
+
+    window.selectOption = selectOption;
+  </script>
+</body>
+</html>
