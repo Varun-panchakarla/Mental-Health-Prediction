@@ -5,97 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mental Health Predictor</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
   <style>
     body {
-      background: linear-gradient(135deg, #20002c, #5b0060);
+      margin: 0;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: "Poppins", sans-serif;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
       color: #fff;
-      margin: 0;
+      background: linear-gradient(135deg, #121212, #1b1b2f);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
       overflow: hidden;
+      cursor: default;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .form-container {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 25px;
+      padding: 40px 50px;
+      width: 95%;
+      max-width: 760px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-      width: 100%;
-      max-width: 750px;
       animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1, h2 {
       text-align: center;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
     }
 
     p {
       text-align: center;
-      color: #ccc;
-    }
-
-    .btn-primary, .btn-success, .btn-secondary {
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      padding: 10px 30px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #9d50bb, #6e48aa);
-      color: #fff;
-    }
-
-    .btn-success {
-      background: linear-gradient(135deg, #00b09b, #96c93d);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, #232526, #414345);
-      color: #fff;
-    }
-
-    .btn-primary:hover, .btn-success:hover, .btn-secondary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      color: #aaa;
+      margin-bottom: 25px;
     }
 
     input, select {
-      border-radius: 10px !important;
-      border: none !important;
-      padding: 10px;
-      background: rgba(255,255,255,0.2);
+      border-radius: 12px !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.1);
       color: #fff;
+      transition: all 0.3s ease;
     }
 
     input:focus, select:focus {
       outline: none;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      border-color: #00e1ff !important;
+      box-shadow: 0 0 12px rgba(0, 224, 255, 0.6);
     }
 
     label {
-      color: #eee;
+      color: #ddd;
       font-weight: 500;
+      margin-bottom: 6px;
     }
 
-    .hidden { display: none; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn {
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px 35px;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
     }
 
-    /* === Question Section === */
+    .btn-primary {
+      background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(246, 79, 89, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #00f260, #0575e6);
+      color: #fff;
+    }
+
+    .btn-success:hover, .btn-secondary:hover {
+      transform: scale(1.05);
+    }
+
     #questionCard {
       text-align: center;
       animation: fadeIn 0.6s ease-in-out;
@@ -103,7 +120,7 @@
 
     .question-title {
       font-size: 1.3rem;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       color: #fff;
       font-weight: 600;
     }
@@ -115,124 +132,130 @@
     }
 
     .option-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 15px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
       cursor: pointer;
       border: 2px solid transparent;
-      transition: all 0.3s ease;
-      color: #eee;
+      transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      color: #e0e0e0;
       font-weight: 500;
     }
 
     .option-card:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.18);
       transform: scale(1.03);
     }
 
     .selected-option {
-      background: linear-gradient(135deg, #ff6a00, #ee0979);
-      border-color: transparent;
+      background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
       color: #fff;
-      box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
       transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(246, 79, 89, 0.6);
+      transition: all 0.15s ease-in;
     }
-
-    .fade-out { opacity: 0; transform: translateY(20px); transition: opacity 0.4s, transform 0.4s; }
-    .fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.4s, transform 0.4s; }
 
     .progress {
       height: 8px;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 20px;
       overflow: hidden;
     }
 
     .progress-bar {
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      background: linear-gradient(90deg, #12c2e9, #f64f59);
       width: 0%;
-      transition: width 0.5s;
+      transition: width 0.4s ease;
     }
 
     .alert {
-      border-radius: 12px;
-      text-align: center;
+      border-radius: 14px;
       font-weight: 600;
-      color: #333;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+      color: #fff;
+      animation: fadeIn 0.6s ease-in-out;
     }
+
+    #remedies {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    #remedies h4 {
+      color: #12c2e9;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    #remedies ul {
+      list-style-type: disc;
+      margin-left: 25px;
+      color: #ccc;
+    }
+
+    #remedies li {
+      margin-bottom: 6px;
+      transition: color 0.2s;
+    }
+
+    #remedies li:hover {
+      color: #fff;
+    }
+
+    .hidden { display: none; }
   </style>
 </head>
 
 <body>
   <div class="form-container">
-    <!-- USER DETAILS -->
     <div id="userForm">
       <h1>Mental Health Assessment</h1>
       <p>Please enter your details before starting.</p>
       <form id="detailsForm">
-        <div class="mb-3">
-          <label>Full Name</label>
-          <input type="text" class="form-control" id="name" required />
-        </div>
-        <div class="mb-3">
-          <label>Age</label>
-          <input type="number" class="form-control" id="age" required />
-        </div>
-        <div class="mb-3">
-          <label>Email</label>
-          <input type="email" class="form-control" id="email" required />
-        </div>
-        <div class="mb-3">
-          <label>Country</label>
-          <input type="text" class="form-control" id="country" required />
-        </div>
-        <div class="text-center">
+        <div class="mb-3"><label>Full Name</label><input type="text" class="form-control" id="name" required /></div>
+        <div class="mb-3"><label>Age</label><input type="number" class="form-control" id="age" required /></div>
+        <div class="mb-3"><label>Email</label><input type="email" class="form-control" id="email" required /></div>
+        <div class="mb-3"><label>Country</label><input type="text" class="form-control" id="country" required /></div>
+        <div class="text-center mt-4">
           <button type="submit" class="btn btn-primary">Start Assessment</button>
         </div>
       </form>
     </div>
 
-    <!-- QUESTIONNAIRE -->
     <div id="questionnaire" class="hidden">
       <h2>Mental Health Questionnaire</h2>
-      <div id="questionsContainer">
-        <div id="questionCard"></div>
-      </div>
+      <div id="questionCard"></div>
 
       <div class="d-flex justify-content-between align-items-center mt-4">
         <button id="prevBtn" class="btn btn-secondary">Previous</button>
-        <div class="progress flex-grow-1 mx-3">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
+        <div class="progress flex-grow-1 mx-3"><div id="progressBar" class="progress-bar"></div></div>
         <button id="nextBtn" class="btn btn-success">Next</button>
       </div>
 
-      <div id="result" class="alert mt-4 hidden"></div>
+      <div id="result" class="alert hidden"></div>
+      <div id="remedies" class="hidden"></div>
     </div>
   </div>
 
   <script>
     const questions = [
-      { text: "How have you been feeling emotionally over the past two weeks?",
-        options: ["Generally positive", "Sometimes low", "Often sad", "Very low or hopeless"] },
-      { text: "Have you felt motivated to start or enjoy your usual daily activities?",
-        options: ["Always motivated", "Occasionally lose interest", "Rarely motivated", "Not at all motivated"] },
-      { text: "How has your energy level been throughout the day?",
-        options: ["Energetic and steady", "Mildly tired", "Fatigued often", "Exhausted most of the time"] },
-      { text: "How have you been sleeping recently?",
-        options: ["Sleeping well", "Mild disturbance", "Frequently disrupted", "Severe trouble sleeping or oversleeping"] },
-      { text: "How often have you been worrying or overthinking?",
-        options: ["Rarely", "Sometimes", "Often", "Almost constantly"] },
-      { text: "How would you describe your appetite or eating habits lately?",
-        options: ["Stable appetite", "Minor changes", "Noticeable changes", "Extreme changes in appetite"] },
-      { text: "Have you found it easy to focus or stay mentally present?",
-        options: ["Very easy", "Sometimes distracted", "Often distracted", "Extremely difficult"] },
-      { text: "Have you felt irritable, restless, or unusually slow?",
-        options: ["No noticeable change", "Slightly noticeable", "Moderately noticeable", "Very noticeable change"] },
-      { text: "Have you had thoughts of giving up, self-harm, or that life isn’t worth living?",
-        options: ["Not at all", "Sometimes", "Often", "Very often"] },
-      { text: "Overall, how difficult have these experiences made your daily functioning?",
-        options: ["Not difficult", "Somewhat difficult", "Very difficult", "Extremely difficult"] }
+      { text: "How have you been feeling emotionally over the past two weeks?", options: ["Generally positive", "Sometimes low", "Often sad", "Very low or hopeless"] },
+      { text: "Have you felt motivated to start or enjoy your usual daily activities?", options: ["Always motivated", "Occasionally lose interest", "Rarely motivated", "Not at all motivated"] },
+      { text: "How has your energy level been throughout the day?", options: ["Energetic and steady", "Mildly tired", "Fatigued often", "Exhausted most of the time"] },
+      { text: "How have you been sleeping recently?", options: ["Sleeping well", "Mild disturbance", "Frequently disrupted", "Severe trouble sleeping or oversleeping"] },
+      { text: "How often have you been worrying or overthinking?", options: ["Rarely", "Sometimes", "Often", "Almost constantly"] },
+      { text: "How would you describe your appetite or eating habits lately?", options: ["Stable appetite", "Minor changes", "Noticeable changes", "Extreme changes in appetite"] },
+      { text: "Have you found it easy to focus or stay mentally present?", options: ["Very easy", "Sometimes distracted", "Often distracted", "Extremely difficult"] },
+      { text: "Have you felt irritable, restless, or unusually slow?", options: ["No noticeable change", "Slightly noticeable", "Moderately noticeable", "Very noticeable change"] },
+      { text: "Have you had thoughts of giving up, self-harm, or that life isn’t worth living?", options: ["Not at all", "Sometimes", "Often", "Very often"] },
+      { text: "Overall, how difficult have these experiences made your daily functioning?", options: ["Not difficult", "Somewhat difficult", "Very difficult", "Extremely difficult"] }
     ];
 
     const userForm = document.getElementById("userForm");
@@ -241,33 +264,22 @@
     const questionCard = document.getElementById("questionCard");
     const progressBar = document.getElementById("progressBar");
     const resultBox = document.getElementById("result");
+    const remediesBox = document.getElementById("remedies");
     const nextBtn = document.getElementById("nextBtn");
     const prevBtn = document.getElementById("prevBtn");
 
     let currentQuestion = 0;
     const answers = {};
 
-    function fadeOutIn(element, callback) {
-      element.classList.add("fade-out");
-      setTimeout(() => {
-        callback();
-        element.classList.remove("fade-out");
-        element.classList.add("fade-in");
-        setTimeout(() => element.classList.remove("fade-in"), 400);
-      }, 400);
-    }
-
     function showQuestion(index) {
       const q = questions[index];
-      fadeOutIn(questionCard, () => {
-        let html = `<div class="question-title"><strong>${index + 1}. ${q.text}</strong></div><div class='option-grid'>`;
-        q.options.forEach((opt, i) => {
-          const selected = answers[index] == i ? "selected-option" : "";
-          html += `<div class="option-card ${selected}" onclick="selectOption(${index},${i},this)">${opt}</div>`;
-        });
-        html += "</div>";
-        questionCard.innerHTML = html;
+      let html = `<div class='question-title'><strong>${index + 1}. ${q.text}</strong></div><div class='option-grid'>`;
+      q.options.forEach((opt, i) => {
+        const selected = answers[index] == i ? "selected-option" : "";
+        html += `<div class="option-card ${selected}" onclick="selectOption(${index},${i},this)">${opt}</div>`;
       });
+      html += "</div>";
+      questionCard.innerHTML = html;
       progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
       prevBtn.classList.toggle("hidden", index === 0);
       nextBtn.textContent = index === questions.length - 1 ? "Predict" : "Next";
@@ -301,14 +313,51 @@
           body: JSON.stringify({ answers: Object.values(answers).map(Number) }),
         });
         const data = await response.json();
+        const result = data.result || "Not Depressed";
+
         resultBox.classList.remove("hidden");
-        resultBox.className = "alert alert-info mt-4";
-        resultBox.textContent = "Prediction Result: " + data.result;
+        resultBox.textContent = "Prediction Result: " + result;
+        remediesBox.classList.remove("hidden");
+        remediesBox.innerHTML = generateRemedies(result);
+
         questionCard.classList.add("hidden");
         nextBtn.classList.add("hidden");
         prevBtn.classList.add("hidden");
       }
     });
+
+    function generateRemedies(result) {
+      let html = "<h4>Recommended Actions:</h4><ul>";
+      if (result.toLowerCase().includes("not")) {
+        html += `
+          <li>You're maintaining a healthy mindset — keep nurturing it.</li>
+          <li>Stay socially connected and do what brings you peace.</li>
+          <li>Practice gratitude or mindfulness daily.</li>
+        `;
+      } else if (result.toLowerCase().includes("mild")) {
+        html += `
+          <li>Take short breaks for self-care and reflection.</li>
+          <li>Include gentle exercises like stretching or yoga.</li>
+          <li>Talk with someone you trust about how you feel.</li>
+        `;
+      } else if (result.toLowerCase().includes("depressed")) {
+        html += `
+          <li>Reach out to a therapist or counselor — help brings clarity.</li>
+          <li>Maintain a regular routine: sleep, meals, light activity.</li>
+          <li>Spend time in nature or with loved ones to recharge.</li>
+        `;
+      } else if (result.toLowerCase().includes("critical")) {
+        html += `
+          <li>Please seek professional mental health support immediately.</li>
+          <li>Reach out to trusted friends, family, or helpline services.</li>
+          <li>Remember: help is available and healing is possible — you are not alone.</li>
+        `;
+      } else {
+        html += `<li>Stay aware of your emotions and take gentle steps toward self-care.</li>`;
+      }
+      html += "</ul>";
+      return html;
+    }
 
     prevBtn.addEventListener("click", () => {
       if (currentQuestion > 0) {
