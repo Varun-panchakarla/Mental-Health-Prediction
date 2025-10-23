@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Assessment</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e1e2f, #121212);
+      font-family: 'Poppins', sans-serif;
+      color: #e0e0e0;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      font-size: 6rem;
+      text-align: center;
+      color: #fff;
+      margin: 0;
+      position: relative;
+      letter-spacing: 2px;
+    }
+
+    h1 span.strike {
+      position: relative;
+      color: #888;
+    }
+
+    h1 span.strike::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 6px;
+      background: #f64f59;
+      transform: rotate(-5deg);
+      border-radius: 3px;
+    }
+
+    .btn {
+      margin-top: 3rem;
+      padding: 1rem 3rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    <span class="strike">Mental</span> Health
+  </h1>
+
+  <a href="/form" class="btn">Fill Form</a>
+
+  <footer>Take a step towards understanding your well-being 💫</footer>
+</body>
+</html>
